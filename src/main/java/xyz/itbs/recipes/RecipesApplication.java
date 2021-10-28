@@ -14,7 +14,7 @@ public class RecipesApplication {
 
 		SpringApplication.run(RecipesApplication.class, args);
 
-		logger.error("Error message !!");
+//		logger.error("Error message !!");
 		logger.info("Info message");
 
 	}
