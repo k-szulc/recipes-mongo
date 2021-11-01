@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
+
 
 @Entity
 public class Recipe {
@@ -127,7 +127,15 @@ public class Recipe {
     }
 
     public void setNotes(Notes notes) {
+
         this.notes = notes;
+        notes.setRecipe(this);
+    }
+
+    public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
     }
 
     public Set<Ingredient> getIngredients() {
@@ -160,7 +168,7 @@ public class Recipe {
                 ", difficulty=" + difficulty +
                 ", image=" + Arrays.toString(image) +
                 ", notes=" + notes.getId() +
-                ", ingredients=" + ingredients.toString() +
+                ", ingredients=" + ingredients.toArray().toString() +
                 ", categories=" + categories.toString() +
                 '}';
     }

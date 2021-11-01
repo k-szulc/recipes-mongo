@@ -8,7 +8,7 @@ INSERT INTO unit_of_measure (description) VALUES ('Pinch');
 INSERT INTO unit_of_measure (description) VALUES ('Ounce');
 INSERT INTO unit_of_measure (description) VALUES ('Cup');
 INSERT INTO unit_of_measure (description) VALUES ('Ripe');
-INSERT INTO unit_of_measure (description) VALUES ('Cloves');
+INSERT INTO unit_of_measure (description) VALUES ('Clove');
 INSERT INTO unit_of_measure (description) VALUES ('Medium');
 INSERT INTO unit_of_measure (description) VALUES ('Large');
 INSERT INTO unit_of_measure (description) VALUES ('Small');

@@ -3,6 +3,7 @@ package xyz.itbs.recipes.bootstrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import xyz.itbs.recipes.domain.*;
 import xyz.itbs.recipes.repositories.CategoryRepository;
@@ -12,6 +13,8 @@ import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Component
+@Profile("szu")
 public class MyBootstrap implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(MyBootstrap.class);

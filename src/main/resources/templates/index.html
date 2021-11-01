@@ -20,7 +20,7 @@
         <td th:text="${recipe.id}"></td>
         <td th:text="${recipe.description}"></td>
         <td th:text="${recipe.difficulty}"></td>
-        <td th:each="ings : ${recipe.ingredients}" th:text="${ings.description}"></td>
+        <td th:each="ings : ${recipe.ingredients}" th:text="${ings.uom.description} + ' of ' + ${ings.description}"></td>
         <td th:text="${recipe.notes.notesBody}"></td>
         <td th:each="cats : ${recipe.categories}" th:text="${cats.description}"></td>
         <td th:text="${recipe.directions}"></td>
