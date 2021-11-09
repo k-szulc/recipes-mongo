@@ -1,5 +1,6 @@
 package xyz.itbs.recipes.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -10,14 +11,15 @@ import xyz.itbs.recipes.repositories.CategoryRepository;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Slf4j
 @Component
 @Profile("szu")
 public class MyBootstrap implements CommandLineRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyBootstrap.class);
     private CategoryRepository categoryRepository;
     private UnitOfMeasureRepository unitOfMeasureRepository;
     private RecipeRepository recipeRepository;
@@ -30,6 +32,7 @@ public class MyBootstrap implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         Optional<Category> optionalCategoryMexican = categoryRepository.findByDescription("Mexican");
@@ -39,9 +42,10 @@ public class MyBootstrap implements CommandLineRunner {
         Optional<UnitOfMeasure> optionalUnitOfMeasureTablespoon = unitOfMeasureRepository.findByDescription("Tablespoon");
         Optional<UnitOfMeasure> optionalUnitOfMeasureCup = unitOfMeasureRepository.findByDescription("Cup");
         Optional<UnitOfMeasure> optionalUnitOfMeasureRipe = unitOfMeasureRepository.findByDescription("Ripe");
-        Optional<UnitOfMeasure> optionalUnitOfMeasureCloves = unitOfMeasureRepository.findByDescription("Cloves");
+        Optional<UnitOfMeasure> optionalUnitOfMeasureCloves = unitOfMeasureRepository.findByDescription("Clove");
         Optional<UnitOfMeasure> optionalUnitOfMeasureMedium = unitOfMeasureRepository.findByDescription("Medium");
         Optional<UnitOfMeasure> optionalUnitOfMeasureLarge = unitOfMeasureRepository.findByDescription("Large");
+
 
         Ingredient avocado = new Ingredient();
         avocado.setAmount(BigDecimal.valueOf(8));
@@ -110,8 +114,8 @@ public class MyBootstrap implements CommandLineRunner {
 
 
         recipeRepository.save(recipe1);
-        logger.warn("Saved");
-        logger.warn("Recipe 1 :: " + recipeRepository.findAll());
+        log.warn("Saved");
+        log.warn("Recipe 1 :: " + recipeRepository.findAll());
 
 
 

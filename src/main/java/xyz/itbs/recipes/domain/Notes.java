@@ -1,7 +1,12 @@
 package xyz.itbs.recipes.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Data
+@EqualsAndHashCode(exclude = {"recipe"})
+@ToString(exclude = {"recipe"})
 @Entity
 public class Notes {
 
@@ -15,36 +20,4 @@ public class Notes {
     @OneToOne
     private Recipe recipe;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNotesBody() {
-        return notesBody;
-    }
-
-    public void setNotesBody(String notesBody) {
-        this.notesBody = notesBody;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    @Override
-    public String toString() {
-        return "Notes{" +
-                "id='" + id + '\'' +
-                ", notesBody='" + notesBody + '\'' +
-                ", recipe=" + recipe.getDescription() +
-                '}';
-    }
 }
