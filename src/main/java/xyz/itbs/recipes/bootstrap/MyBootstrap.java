@@ -1,8 +1,6 @@
 package xyz.itbs.recipes.bootstrap;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -36,86 +34,73 @@ public class MyBootstrap implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Optional<Category> optionalCategoryMexican = categoryRepository.findByDescription("Mexican");
+        if(!optionalCategoryMexican.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
+
         Optional<Category> optionalCategoryAmerican = categoryRepository.findByDescription("American");
+        if(!optionalCategoryAmerican.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<Category> optionalCategoryFastFood = categoryRepository.findByDescription("Fast Food");
+        if(!optionalCategoryFastFood.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
+
         Optional<UnitOfMeasure> optionalUnitOfMeasureTeaspoon = unitOfMeasureRepository.findByDescription("Teaspoon");
+        if(!optionalUnitOfMeasureTeaspoon.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureTablespoon = unitOfMeasureRepository.findByDescription("Tablespoon");
+        if(!optionalUnitOfMeasureTablespoon.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureCup = unitOfMeasureRepository.findByDescription("Cup");
+        if(!optionalUnitOfMeasureCup.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureRipe = unitOfMeasureRepository.findByDescription("Ripe");
+        if(!optionalUnitOfMeasureRipe.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureCloves = unitOfMeasureRepository.findByDescription("Clove");
+        if(!optionalUnitOfMeasureCloves.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureMedium = unitOfMeasureRepository.findByDescription("Medium");
+        if(!optionalUnitOfMeasureMedium.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
         Optional<UnitOfMeasure> optionalUnitOfMeasureLarge = unitOfMeasureRepository.findByDescription("Large");
+        if(!optionalUnitOfMeasureLarge.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
+
+        Notes guacNotes = new Notes();
+        guacNotes.setNotesBody("Notes");
 
 
-        Ingredient avocado = new Ingredient();
-        avocado.setAmount(BigDecimal.valueOf(8));
-        avocado.setDescription("Hass avocado");
-        avocado.setUom(optionalUnitOfMeasureRipe.get());
+        Recipe guacRecipe = new Recipe();
+        guacRecipe.setDescription("Perfect Guacamole");
+        guacRecipe.setCookTime(15);
+        guacRecipe.setPrepTime(15);
+        guacRecipe.setServings(8);
+        guacRecipe.setDirections("Directions");
+        guacRecipe.setNotes(guacNotes);
+        guacRecipe.getCategories().add(optionalCategoryMexican.get());
+        guacRecipe.getCategories().add(optionalCategoryFastFood.get());
+        guacRecipe.setDifficulty(Difficulty.EASY);
+        guacRecipe.addIngredient(new Ingredient("Sugar",BigDecimal.valueOf(5),
+                optionalUnitOfMeasureTablespoon.get()));
+        guacRecipe.addIngredient(new Ingredient("Avocado",BigDecimal.valueOf(1),
+                optionalUnitOfMeasureLarge.get()));
+        guacRecipe.setUrl("http://blablabla.com");
+        guacRecipe.setSource("From Granny");
 
 
-        Ingredient garlic = new Ingredient();
-        garlic.setAmount(BigDecimal.valueOf(3));
-        garlic.setDescription("Peeled Garlic");
-        garlic.setUom(optionalUnitOfMeasureCloves.get());
-
-        Ingredient salt = new Ingredient();
-        salt.setAmount(BigDecimal.valueOf(0.5));
-        salt.setDescription("Kosher Salt");
-        salt.setUom(optionalUnitOfMeasureTeaspoon.get());
-
-        Ingredient redOnion = new Ingredient();
-        redOnion.setAmount(BigDecimal.valueOf(0.5));
-        redOnion.setDescription("Red Onion");
-        redOnion.setUom(optionalUnitOfMeasureMedium.get());
-
-        Ingredient jalapeno = new Ingredient();
-        jalapeno.setAmount(BigDecimal.valueOf(0.5));
-        jalapeno.setDescription("Jalapeno");
-        jalapeno.setUom(optionalUnitOfMeasureLarge.get());
-
-        Ingredient cilantro = new Ingredient();
-        cilantro.setAmount(BigDecimal.valueOf(0.25));
-        cilantro.setDescription("Chopped Cilantro");
-        cilantro.setUom(optionalUnitOfMeasureCup.get());
-
-        Ingredient limeJuice = new Ingredient();
-        limeJuice.setAmount(BigDecimal.valueOf(2));
-        limeJuice.setDescription("Fresh Lime Juice");
-        limeJuice.setUom(optionalUnitOfMeasureTablespoon.get());
-
-        Notes notes1 = new Notes();
-        notes1.setNotesBody("Super Long Blahblahblah");
-
-
-        Recipe recipe1 = new Recipe();
-//        optionalCategoryMexican.ifPresent(category -> recipe1.getCategories().add(category));
-        recipe1.setDescription("Perfect Guacamole");
-        recipe1.setCookTime(15);
-        recipe1.setPrepTime(15);
-        recipe1.setServings(8);
-        recipe1.setDirections("Bla bla blah");
-        recipe1.setNotes(notes1);
-        notes1.setRecipe(recipe1);
-        recipe1.getCategories().add(optionalCategoryMexican.get());
-        recipe1.getCategories().add(optionalCategoryFastFood.get());
-        recipe1.setDifficulty(Difficulty.EASY);
-        recipe1.getIngredients().add(avocado);
-        recipe1.getIngredients().add(garlic);
-        garlic.setRecipe(recipe1);
-        avocado.setRecipe(recipe1);
-        optionalCategoryMexican.get().getRecipes().add(recipe1);
-        optionalCategoryFastFood.get().getRecipes().add(recipe1);
-        optionalCategoryAmerican.get().getRecipes().add(recipe1);
-        categoryRepository.save(optionalCategoryFastFood.get());
-        categoryRepository.save(optionalCategoryMexican.get());
-        notes1.setRecipe(recipe1);
-        recipe1.setUrl("http://blablabla.com");
-        recipe1.setSource("From Granny");
-
-
-        recipeRepository.save(recipe1);
-        log.warn("Saved");
-        log.warn("Recipe 1 :: " + recipeRepository.findAll());
+        recipeRepository.save(guacRecipe);
+        log.info("Saved");
+        log.info("Recipe 1 :: " + recipeRepository.findAll());
 
 
 

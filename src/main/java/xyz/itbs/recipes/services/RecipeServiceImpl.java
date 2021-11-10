@@ -21,11 +21,9 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     public Set<Recipe> getAllRecipes() {
-        log.debug("Getting recipes");
+        log.info("Getting recipes");
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
     }
-
-
 }
