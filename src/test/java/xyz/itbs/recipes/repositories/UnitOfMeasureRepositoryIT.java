@@ -21,7 +21,6 @@ class UnitOfMeasureRepositoryIT {
 
     @BeforeEach
     void setUp() {
-
     }
 
     @Test
