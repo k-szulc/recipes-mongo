@@ -6,6 +6,7 @@ import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -25,5 +26,15 @@ public class RecipeServiceImpl implements RecipeService{
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
+    }
+
+    @Override
+    public Recipe getRecipeById(Long id) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if(!optionalRecipe.isPresent()){
+            return null;
+        }
+        return optionalRecipe.get();
+
     }
 }

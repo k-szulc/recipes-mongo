@@ -36,25 +36,18 @@
                         <tr>
                             <th>ID</th>
                             <th>Description</th>
-<!--                            <th>Difficulty</th>-->
-<!--                            <th>Ingredients</th>-->
-<!--                            <th>Notes</th>-->
-<!--                            <th>Categories</th>-->
-<!--                            <th>Directions</th>-->
+                            <th>View</th>
                         </tr>
                         </thead>
                         <tr th:remove="all">
-                            <td th:text="${recipe.id}">123</td>
-                            <td th:text="${recipe.description}">Something</td>
+                            <td>123</td>
+                            <td>Something</td>
+                            <td><a href="#">View</a></td>
                         </tr>
                         <tr th:each="recipe : ${recipes}">
                             <td th:text="${recipe.id}"></td>
                             <td th:text="${recipe.description}"></td>
-<!--                            <td th:text="${recipe.difficulty}"></td>-->
-<!--                            <td th:each="ings : ${recipe.ingredients}" th:text="${ings.uom.description} + ' of ' + ${ings.description}"></td>-->
-<!--                            <td th:text="${recipe.notes.notesBody}"></td>-->
-<!--                            <td th:each="cats : ${recipe.categories}" th:text="${cats.description}"></td>-->
-<!--                            <td th:text="${recipe.directions}"></td>-->
+                            <td><a href="#" th:href="@{'recipe/show/' + ${recipe.id}}">View</a></td>
                         </tr>
                     </table>
                 </div>
