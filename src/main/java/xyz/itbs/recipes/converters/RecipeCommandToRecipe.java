@@ -5,11 +5,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import xyz.itbs.recipes.commands.RecipeCommand;
-import xyz.itbs.recipes.domain.Category;
-import xyz.itbs.recipes.domain.Ingredient;
 import xyz.itbs.recipes.domain.Recipe;
-
-import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
@@ -45,20 +42,15 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
                 .url(source.getUrl())
                 .source(source.getSource())
                 .notes(notesCommandToNotes.convert(source.getNotes()))
-                .categories(new HashSet<Category>())
-                .ingredients(new HashSet<Ingredient>())
+                .categories(source.getCategories()
+                        .stream()
+                        .map(categoryCommandToCategory::convert)
+                        .collect(Collectors.toSet()))
+                .ingredients(source.getIngredients()
+                        .stream()
+                        .map(ingredientCommandToIngredient::convert)
+                        .collect(Collectors.toSet()))
                 .build();
-
-        if(source.getCategories() != null && source.getCategories().size() > 0){
-            source.getCategories()
-                    .forEach(categoryCommand -> recipe.getCategories()
-                            .add(categoryCommandToCategory.convert(categoryCommand)));
-        }
-        if(source.getIngredients() != null && source.getIngredients().size() > 0){
-            source.getIngredients()
-                    .forEach(ingredientCommand -> recipe.getIngredients()
-                            .add(ingredientCommandToIngredient.convert(ingredientCommand)));
-        }
         return recipe;
     }
 }
