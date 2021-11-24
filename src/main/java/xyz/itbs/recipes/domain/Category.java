@@ -10,6 +10,9 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"recipes"})
 @ToString(exclude = {"recipes"})
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
 
     @Id

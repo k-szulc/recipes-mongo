@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import xyz.itbs.recipes.commands.RecipeCommand;
+import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
+import xyz.itbs.recipes.converters.RecipeToRecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
@@ -20,11 +23,15 @@ class RecipeServiceImplTest {
 
     @Mock
     RecipeRepository recipeRepository;
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository,recipeToRecipeCommand,recipeCommandToRecipe);
     }
 
     @Test
@@ -50,5 +57,19 @@ class RecipeServiceImplTest {
         assertEquals(recipe.getId(),savedRecipe.getId());
         verify(recipeRepository,times(1)).findById(anyLong());
 
+    }
+
+    @Test
+    void saveRecipeCommand() {
+        when(recipeToRecipeCommand.convert(any(Recipe.class)))
+                .thenReturn(RecipeCommand.builder().build());
+        when(recipeCommandToRecipe.convert(any(RecipeCommand.class)))
+                .thenReturn(Recipe.builder().build());
+        when(recipeRepository.save(any(Recipe.class)))
+                .thenReturn(Recipe.builder().build());
+        RecipeCommand savedRecipe = recipeService.saveRecipeCommand(RecipeCommand.builder().build());
+        verify(recipeRepository,times(1)).save(any(Recipe.class));
+        verify(recipeCommandToRecipe,times(1)).convert(any(RecipeCommand.class));
+        verify(recipeToRecipeCommand,times(1)).convert(any(Recipe.class));
     }
 }
