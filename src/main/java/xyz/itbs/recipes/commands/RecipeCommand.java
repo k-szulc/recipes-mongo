@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class RecipeCommand {
     private Long id;
     private String description;

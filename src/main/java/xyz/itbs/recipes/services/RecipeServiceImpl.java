@@ -31,9 +31,9 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     public Set<Recipe> getAllRecipes() {
-        log.info("Getting recipes");
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
+        log.info("Getting all recipes :: " + recipeSet.size());
         return recipeSet;
     }
 
@@ -43,7 +43,10 @@ public class RecipeServiceImpl implements RecipeService{
         if(!optionalRecipe.isPresent()){
             return null;
         }
-        return optionalRecipe.get();
+        Recipe recipe = optionalRecipe.get();
+        log.info("Fetching Recipe :: ID :: " + recipe.getId());
+        log.debug("Fetching Recipe :: " + recipe);
+        return recipe;
 
     }
 
@@ -51,6 +54,8 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
         Recipe savedRecipe = recipeRepository.save(recipeCommandToRecipe.convert(recipeCommand));
+        log.info("Saved Recipe :: ID :: " + savedRecipe.getId());
+        log.debug("Saved Recipe :: " + savedRecipe);
         return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
