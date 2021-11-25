@@ -10,13 +10,10 @@ import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
 import xyz.itbs.recipes.converters.RecipeToRecipeCommand;
 import xyz.itbs.recipes.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import xyz.itbs.recipes.domain.Recipe;
-import xyz.itbs.recipes.domain.UnitOfMeasure;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
 import javax.transaction.Transactional;
-
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
