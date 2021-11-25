@@ -72,4 +72,19 @@ class RecipeServiceImplTest {
         verify(recipeCommandToRecipe,times(1)).convert(any(RecipeCommand.class));
         verify(recipeToRecipeCommand,times(1)).convert(any(Recipe.class));
     }
+
+    @Test
+    void getRecipeCommandById() {
+        RecipeCommand recipe = new RecipeCommand();
+        recipe.setId(1L);
+        when(recipeToRecipeCommand.convert(any(Recipe.class))).thenReturn(recipe);
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(Recipe.builder().id(1L).build()));
+
+        RecipeCommand savedRecipe = recipeService.getRecipeCommandById(1L);
+        assertNotNull(savedRecipe);
+        assertEquals(recipe.getId(),savedRecipe.getId());
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeToRecipeCommand,times(1)).convert(any(Recipe.class));
+
+    }
 }
