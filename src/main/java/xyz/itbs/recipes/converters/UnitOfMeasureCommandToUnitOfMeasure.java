@@ -8,10 +8,19 @@ import xyz.itbs.recipes.commands.UnitOfMeasureCommand;
 import xyz.itbs.recipes.domain.UnitOfMeasure;
 @Component
 public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeasureCommand, UnitOfMeasure> {
+
     @Synchronized
     @Nullable
     @Override
     public UnitOfMeasure convert(UnitOfMeasureCommand source) {
-        return null;
+        if(source == null) {
+            return null;
+        }
+
+        final UnitOfMeasure unitOfMeasure = UnitOfMeasure.builder()
+                .id(source.getId())
+                .description(source.getDescription())
+                .build();
+        return unitOfMeasure;
     }
 }

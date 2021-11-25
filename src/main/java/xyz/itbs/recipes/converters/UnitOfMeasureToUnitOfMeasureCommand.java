@@ -13,6 +13,13 @@ public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeas
     @Nullable
     @Override
     public UnitOfMeasureCommand convert(UnitOfMeasure source) {
-        return null;
+        if(source == null){
+            return null;
+        }
+        final UnitOfMeasureCommand unitOfMeasureCommand = UnitOfMeasureCommand.builder()
+                .id(source.getId())
+                .description(source.getDescription())
+                .build();
+        return unitOfMeasureCommand;
     }
 }

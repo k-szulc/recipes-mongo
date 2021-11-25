@@ -8,10 +8,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
 import xyz.itbs.recipes.converters.RecipeToRecipeCommand;
+import xyz.itbs.recipes.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.domain.UnitOfMeasure;
 import xyz.itbs.recipes.repositories.RecipeRepository;
+import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
 import javax.transaction.Transactional;
+
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,9 +29,13 @@ class RecipeServiceIT {
     @Autowired
     RecipeRepository recipeRepository;
     @Autowired
+    UnitOfMeasureRepository unitOfMeasureRepository;
+    @Autowired
     RecipeCommandToRecipe recipeCommandToRecipe;
     @Autowired
     RecipeToRecipeCommand recipeToRecipeCommand;
+    @Autowired
+    UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
 
     @Transactional
     @Test
@@ -44,5 +53,6 @@ class RecipeServiceIT {
         assertEquals(recipe.getId(), savedRecipeCommand.getId());
         assertEquals(recipe.getCategories().size(), savedRecipeCommand.getCategories().size());
         assertEquals(recipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());
+        assertNotNull(savedRecipeCommand.getIngredients().iterator().next().getUom());
     }
 }
