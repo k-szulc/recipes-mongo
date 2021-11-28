@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingredient list</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+            th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"
+            th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<!--/*@thymesVar id="recipe" type="xyz.itbs.domain.Recipe"*/-->
+<!--/*@thymesVar id="ingredients" type="java.util.Set<xyz.itbs.commands.IngredientCommand>"*/-->
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+                    <h1 class="panel-title">SzuRecipes - Recipe - Ingredient list</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipe.ingredients)}">
+                        <table class="table table-hover">
+                            <thead class="thead-inverse">
+                            <tr>
+<!--                                <th>ID</th>-->
+                                <th>Description</th>
+                                <th>View</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tr th:remove="all">
+                                <td>123</td>
+                                <td>Something</td>
+                                <td><a href="#">View</a></td>
+                            </tr>
+                            <tr th:each="ingr : ${recipe.ingredients}">
+<!--                                <td th:text="${ingr.getId()}"></td>-->
+                                <td th:text="${ingr.getAmount() + ' ' + ingr.getUom().getDescription() +
+                                ' - ' + ingr.getDescription()}"></td>
+                                <td><a href="#" th:href="@{'recipe/' + ${recipe.id} + 'ingredients/show/'}">View</a></td>
+                                <td><a href="#" th:href="@{'recipe/' + ${recipe.id} + 'ingredients/update'}">Edit</a></td>
+                                <td><a href="#" th:href="@{'recipe/' + ${recipe.id} + '/ingredients/'+ ${ingr.id} +'/delete'}">Delete</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                        <div class="row">
+                            <div class="col-sm-2 text-left">
+                                <p><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/edit'}" class="btn btn-info" role="button">back</a></p>
+                            </div>
+
+                            <div class="col-sm-10 text-right">
+                                <p><a href="#" th:href="@{'/recipe/edit'}" class="btn btn-info" role="button">new</a></p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

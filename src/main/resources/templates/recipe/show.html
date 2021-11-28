@@ -19,11 +19,11 @@
 <body>
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-5">
+        <div class="col-md-6 col-md-offset-3">
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+                        <h1 class="panel-title" th:text="'SzuRecipes - ' + ${recipe.description}">SzuRecipes - Recipe</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -89,7 +89,7 @@
                             <div class="col-md-12">
                                 <ul th:each="ingr : ${recipe.getIngredients()}">
                                     <li th:text="${(ingr.getAmount() + ' ' + ingr.getUom().getDescription() +
-                                     ' of ' + ingr.getDescription())}">1 Cup of milk</li>
+                                     ' - ' + ingr.getDescription())}">1 Cup of milk</li>
                                 </ul>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2 text-left">
-                <p><a href="#" th:href="@{'/'}" class="btn btn-info" role="button">home</a></p>
+                <p><a href="#" th:href="@{'/'}" class="btn btn-info" role="button">back</a></p>
                     </div>
 
                         <div class="col-sm-10 text-right">
