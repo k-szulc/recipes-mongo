@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import xyz.itbs.recipes.services.RecipeService;
-import xyz.itbs.recipes.services.RecipeServiceImpl;
 
 
 @Slf4j
@@ -21,7 +20,7 @@ public class IndexController {
     @RequestMapping({"","/","/index","/index.html"})
     public String getIndexPage(Model model){
         log.debug("Getting index page");
-        model.addAttribute("recipes", recipeService.getAllRecipes());
+        model.addAttribute("recipes", recipeService.getNotNullDescriptionRecipes());
         return "index";
     }
 }

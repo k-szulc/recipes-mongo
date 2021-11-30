@@ -42,14 +42,14 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
                 .url(source.getUrl())
                 .source(source.getSource())
                 .notes(notesCommandToNotes.convert(source.getNotes()))
-                .categories(source.getCategories()
+                .categories(source.getCategories() != null ? source.getCategories()
                         .stream()
                         .map(categoryCommandToCategory::convert)
-                        .collect(Collectors.toSet()))
-                .ingredients(source.getIngredients()
+                        .collect(Collectors.toSet()) : null)
+                .ingredients(source.getIngredients() != null ? source.getIngredients()
                         .stream()
                         .map(ingredientCommandToIngredient::convert)
-                        .collect(Collectors.toSet()))
+                        .collect(Collectors.toSet()) : null)
                 .build();
         return recipe;
     }

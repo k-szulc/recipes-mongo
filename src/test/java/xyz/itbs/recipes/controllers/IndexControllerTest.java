@@ -49,18 +49,20 @@ class IndexControllerTest {
         Set<Recipe> recipeSet = new HashSet<>();
         Recipe recipe = new Recipe();
         recipe.setId(1L);
+        recipe.setDescription("");
         Recipe recipe2 = new Recipe();
         recipe2.setId(2L);
+        recipe.setDescription("");
         recipeSet.add(recipe);
         recipeSet.add(recipe2);
 
-        when(recipeService.getAllRecipes()).thenReturn(recipeSet);
+        when(recipeService.getNotNullDescriptionRecipes()).thenReturn(recipeSet);
 
         ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
         String viewName = indexController.getIndexPage(model);
         assertEquals("index",viewName);
-        verify(recipeService,times(1)).getAllRecipes();
+        verify(recipeService,times(1)).getNotNullDescriptionRecipes();
         verify(model,times(1)).addAttribute(eq("recipes"),argumentCaptor.capture());
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertEquals(2, setInController.size());

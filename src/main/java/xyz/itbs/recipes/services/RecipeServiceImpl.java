@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -33,6 +34,16 @@ public class RecipeServiceImpl implements RecipeService{
     public Set<Recipe> getAllRecipes() {
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
+        log.info("Getting all recipes :: " + recipeSet.size());
+        return recipeSet;
+    }
+
+    public Set<Recipe> getNotNullDescriptionRecipes() {
+        Set<Recipe> recipeSet = new HashSet<>();
+        recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
+        recipeSet = recipeSet.stream()
+                .filter(recipe -> recipe.getDescription()!=null)
+                .collect(Collectors.toSet());
         log.info("Getting all recipes :: " + recipeSet.size());
         return recipeSet;
     }

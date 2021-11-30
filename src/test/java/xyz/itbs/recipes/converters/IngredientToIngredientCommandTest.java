@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 import xyz.itbs.recipes.commands.IngredientCommand;
 import xyz.itbs.recipes.commands.UnitOfMeasureCommand;
 import xyz.itbs.recipes.domain.Ingredient;
+import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.domain.UnitOfMeasure;
 
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ class IngredientToIngredientCommandTest {
                 .description("test")
                 .amount(new BigDecimal(1))
                 .uom(UnitOfMeasure.builder().id(1L).build())
+                .recipe(Recipe.builder().id(2L).build())
                 .build();
     }
 
@@ -54,6 +56,7 @@ class IngredientToIngredientCommandTest {
         ingredientCommand = ingredientToIngredientCommand.convert(ingredient);
         assertNotNull(ingredientCommand);
         assertEquals(ingredient.getId(),ingredientCommand.getId());
+        assertEquals(ingredient.getRecipe().getId(),ingredientCommand.getRecipeId());
         assertEquals(ingredient.getAmount(),ingredientCommand.getAmount());
         assertEquals(ingredient.getDescription(),ingredientCommand.getDescription());
         assertEquals(ingredient.getUom().getId(),ingredientCommand.getUom().getId());

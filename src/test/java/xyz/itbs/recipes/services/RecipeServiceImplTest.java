@@ -47,6 +47,18 @@ class RecipeServiceImplTest {
     }
 
     @Test
+    void getNonEmptyRecipes(){
+        HashSet<Recipe> recipeHashSet = new HashSet<>();
+        recipeHashSet.add(Recipe.builder().id(1L).build());
+        recipeHashSet.add(Recipe.builder().id(2L).description("test").build());
+        when(recipeRepository.findAll()).thenReturn(recipeHashSet);
+
+        Set<Recipe> recipeSet = recipeService.getNotNullDescriptionRecipes();
+        assertEquals(recipeSet.size(),1);
+        verify(recipeRepository,times(1)).findAll();
+    }
+
+    @Test
     void getRecipeById() {
         Recipe recipe = new Recipe();
         recipe.setId(1L);

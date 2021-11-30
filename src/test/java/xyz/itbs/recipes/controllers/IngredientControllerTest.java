@@ -41,4 +41,19 @@ class IngredientControllerTest {
                 .andExpect(model().attribute("recipe",instanceOf(RecipeCommand.class)));
         verify(recipeService,times(1)).getRecipeCommandById(anyLong());
     }
+
+    @Test
+    void getIngredientListNullRecipeId() throws Exception {
+        when(recipeService.saveRecipeCommand(any(RecipeCommand.class)))
+                .thenReturn(RecipeCommand.builder().id(1L).build());
+        when(recipeService.getRecipeCommandById(anyLong()))
+                .thenReturn(RecipeCommand.builder().id(1L).build());
+        mockMvc.perform(get("/recipe/null/ingredients"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/list"))
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(model().attribute("recipe",instanceOf(RecipeCommand.class)));
+        verify(recipeService,times(1)).getRecipeCommandById(anyLong());
+        verify(recipeService,times(1)).saveRecipeCommand(any(RecipeCommand.class));
+    }
 }

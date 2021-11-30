@@ -25,11 +25,12 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
             return null;
         }
         final IngredientCommand ingredientCommand = IngredientCommand.builder()
-                                                    .id(source.getId())
-                                                    .description(source.getDescription())
-                                                    .amount(source.getAmount())
-                                                    .uom(unitOfMeasureToUnitOfMeasureCommand.convert(source.getUom()))
-                                                    .build();
+                .id(source.getId())
+                .recipeId(source.getRecipe() != null ? source.getRecipe().getId() : null)
+                .description(source.getDescription())
+                .amount(source.getAmount())
+                .uom(unitOfMeasureToUnitOfMeasureCommand.convert(source.getUom()))
+                .build();
         return ingredientCommand;
     }
 }
