@@ -1,6 +1,7 @@
 package xyz.itbs.recipes.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class RecipeServiceImpl implements RecipeService{
+public class RecipeServiceImpl implements RecipeService, CleanerService{
 
     private final RecipeRepository recipeRepository;
     private final RecipeToRecipeCommand recipeToRecipeCommand;
@@ -83,4 +84,14 @@ public class RecipeServiceImpl implements RecipeService{
         log.info("Removed Recipe :: ID :: " + id);
     }
 
+    @Override
+    @Transactional
+    @Scheduled(fixedDelay = 300000)
+    public void cleanUp() {
+        log.debug("CLEANUP :: Before cleanup :: " + getAllRecipes().size());
+        getAllRecipes().stream()
+                .filter(recipe -> recipe.getDescription()==null)
+                .forEach(recipe -> deleteRecipeById(recipe.getId()));
+        log.debug("CLEANUP :: After cleanup :: " + getAllRecipes().size());
+    }
 }
