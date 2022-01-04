@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import xyz.itbs.recipes.commands.IngredientCommand;
 import xyz.itbs.recipes.domain.Ingredient;
+import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.domain.UnitOfMeasure;
 
 import java.math.BigDecimal;
@@ -32,8 +33,16 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
                 .id(source.getId())
                 .description(source.getDescription())
                 .amount(source.getAmount())
-                .uom(unitOfMeasureCommandToUnitOfMeasure.convert(source.getUom()))
+                .uom(source.getUom() != null ? unitOfMeasureCommandToUnitOfMeasure.convert(source.getUom()) : null)
                 .build();
+
+
+        if(source.getRecipeId() != null){
+            Recipe recipe = new Recipe();
+            recipe.setId(source.getRecipeId());
+            ingredient.setRecipe(recipe);
+            recipe.addIngredient(ingredient);
+        }
 
         return ingredient;
     }

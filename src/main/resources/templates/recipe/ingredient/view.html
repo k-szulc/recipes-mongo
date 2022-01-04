@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-sm-10 text-right">
-<!--              <p><a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/ingredients/add'}" class="btn btn-info" role="button">new</a></p>-->
+              <p><a href="#" th:href="@{'/recipe/' + ${ingredient.getRecipeId} + '/ingredients/' + ${ingredient.getId} + '/edit'}" class="btn btn-info" role="button">edit</a></p>
             </div>
           </div>
         </div>
