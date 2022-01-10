@@ -14,6 +14,7 @@ import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -83,6 +84,25 @@ class IngredientServiceImplTest {
         assertEquals(Long.valueOf(3L), savedCommand.getId());
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository,times(1)).save(any(Recipe.class));
+
+    }
+
+    @Test
+    void deleteIngredientById(){
+        Recipe recipe = Recipe.builder().id(1L).ingredients(new HashSet<>()).build();
+        Ingredient ingredient = Ingredient.builder().id(1L).build();
+        Ingredient ingredient2 = Ingredient.builder().id(2L).build();
+        Ingredient ingredient3 = Ingredient.builder().id(3L).build();
+        recipe.addIngredient(ingredient);
+        recipe.addIngredient(ingredient2);
+        recipe.addIngredient(ingredient3);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.save(any())).thenReturn(recipe);
+        ingredientService.deleteIngredientById(recipe.getId().toString(),ingredient2.getId().toString());
+        assertEquals(2,recipe.getIngredients().size());
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,times(1)).save(any());
 
     }
 }

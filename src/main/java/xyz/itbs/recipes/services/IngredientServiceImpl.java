@@ -11,7 +11,10 @@ import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -97,6 +100,30 @@ public class IngredientServiceImpl implements IngredientService {
             }
 
             return ingredientToIngredientCommand.convert(savedIngredient.get());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteIngredientById(String id, String recipeId) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(recipeId));
+
+        if (!recipeOptional.isPresent()) {
+            log.error("Recipe :: " + recipeId + " :: not found !");
+        } else {
+
+            Recipe recipe = recipeOptional.get();
+            Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
+                    .filter(ingr -> ingr.getId().equals(Long.valueOf(id)))
+                    .findFirst();
+            if(!ingredientOptional.isPresent()) {
+                log.error("Ingredient :: " + id + " :: not found !");
+            } else {
+                log.info("Removing ingredient :: " + id);
+                recipe.delIngredient(ingredientOptional.get());
+                log.info("Saving recipe :: " + recipeId);
+                recipeRepository.save(recipe);
+            }
         }
     }
 }

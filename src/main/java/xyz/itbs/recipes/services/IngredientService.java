@@ -6,5 +6,6 @@ public interface IngredientService {
 
     IngredientCommand findByIdAndRecipeId(String id, String recipeId);
     IngredientCommand saveIngredientCommand(IngredientCommand command);
+    void deleteIngredientById(String id, String recipeId);
 
 }

@@ -60,4 +60,10 @@ public class Recipe {
         this.ingredients.add(ingredient);
         return this;
     }
+
+    public Recipe delIngredient(Ingredient ingredient){
+        ingredient.setRecipe(null);
+        this.ingredients.remove(ingredient);
+        return this;
+    }
 }

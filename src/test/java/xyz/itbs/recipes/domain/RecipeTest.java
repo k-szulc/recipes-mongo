@@ -32,4 +32,12 @@ class RecipeTest {
         assertEquals(ingredient.getRecipe(), recipe);
         assertTrue(recipe.getIngredients().size()>0);
     }
+
+    @Test
+    void delIngredient() {
+        recipe.addIngredient(ingredient);
+        assertEquals(1, recipe.getIngredients().size());
+        recipe.delIngredient(ingredient);
+        assertEquals(0, recipe.getIngredients().size());
+    }
 }
