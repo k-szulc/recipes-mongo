@@ -8,6 +8,7 @@ import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
 import xyz.itbs.recipes.converters.RecipeToRecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
 import java.util.HashSet;
@@ -68,6 +69,17 @@ class RecipeServiceImplTest {
         assertNotNull(savedRecipe);
         assertEquals(recipe.getId(),savedRecipe.getId());
         verify(recipeRepository,times(1)).findById(anyLong());
+
+    }
+
+    @Test
+    void getRecipeByIdNotFound() {
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NotFoundException.class,
+                () -> recipeService.getRecipeById(1L));
+
+        assertEquals("Recipe Not Found", exception.getMessage());
 
     }
 

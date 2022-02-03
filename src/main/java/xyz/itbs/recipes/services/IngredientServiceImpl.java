@@ -7,6 +7,7 @@ import xyz.itbs.recipes.converters.IngredientCommandToIngredient;
 import xyz.itbs.recipes.converters.IngredientToIngredientCommand;
 import xyz.itbs.recipes.domain.Ingredient;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
@@ -77,7 +78,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
                         .findById(command.getUom().getId())
-                        .orElseThrow(()->new RuntimeException("UOM NOT FOUND")));
+                        .orElseThrow(()->new NotFoundException("UOM NOT FOUND")));
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
                 ingredient.setRecipe(recipe);

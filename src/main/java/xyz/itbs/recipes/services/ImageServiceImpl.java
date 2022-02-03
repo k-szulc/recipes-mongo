@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class ImageServiceImpl implements ImageService {
         Optional<Recipe> recipeOptional= recipeRepository.findById(recipeId);
         if(!recipeOptional.isPresent()){
             log.error("Recipe not found !");
-            throw new RuntimeException("Recipe not found !!");
+            throw new NotFoundException("Recipe Not Found");
         } else {
             try {
                 Recipe recipe = recipeOptional.get();

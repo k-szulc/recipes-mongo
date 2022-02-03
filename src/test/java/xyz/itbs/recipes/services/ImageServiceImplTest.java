@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
 import java.util.Optional;
@@ -22,18 +23,21 @@ class ImageServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    MultipartFile multiPartFile;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         imageService = new ImageServiceImpl(recipeRepository);
+
+        multiPartFile = new MockMultipartFile(
+                "imagefile","testing.txt","text/plain","SzuRecipes".getBytes());
 
     }
 
     @Test
     void saveImageFie() throws Exception{
         //given
-        MultipartFile multiPartFile = new MockMultipartFile(
-                "imagefile","testing.txt","text/plain","SzuRecipes".getBytes());
 
         Recipe recipe = Recipe.builder().id(1L).build();
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -49,5 +53,16 @@ class ImageServiceImplTest {
         verify(recipeRepository,times(1)).save(argumentCaptor.capture());
         Recipe savedRecipe = argumentCaptor.getValue();
         assertEquals(multiPartFile.getBytes().length, savedRecipe.getImage().length);
+    }
+
+    @Test
+    void getRecipeByIdNotFound() {
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NotFoundException.class,
+                () -> imageService.saveImageFile(anyLong(),multiPartFile));
+
+        assertEquals("Recipe Not Found", exception.getMessage());
+
     }
 }

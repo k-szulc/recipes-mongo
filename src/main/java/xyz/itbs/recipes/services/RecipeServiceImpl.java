@@ -7,6 +7,7 @@ import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.converters.RecipeCommandToRecipe;
 import xyz.itbs.recipes.converters.RecipeToRecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
 import javax.transaction.Transactional;
@@ -53,7 +54,7 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
     public Recipe getRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if(!optionalRecipe.isPresent()){
-            return null;
+            throw new NotFoundException("Recipe Not Found");
         }
         Recipe recipe = optionalRecipe.get();
         log.info("Fetching Recipe :: ID :: " + recipe.getId());

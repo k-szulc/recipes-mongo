@@ -1,5 +1,6 @@
 package xyz.itbs.recipes.controllers;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,9 +10,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
+import xyz.itbs.recipes.exceptions.NotFoundException;
+import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.services.RecipeService;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,6 +33,9 @@ class RecipeControllerTest {
 
     @Mock
     RecipeService recipeService;
+
+    @Mock
+    RecipeRepository recipeRepository;
 
     @BeforeEach
     void setUp() {
@@ -46,6 +56,15 @@ class RecipeControllerTest {
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(model().attribute("recipe",instanceOf(Recipe.class)));
         verify(recipeService,times(1)).getRecipeById(anyLong());
+    }
+
+    @Test
+    public void getRecipeByIdNotFound() throws Exception {
+
+        when(recipeService.getRecipeById(anyLong())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
+
     }
 
     @Test
