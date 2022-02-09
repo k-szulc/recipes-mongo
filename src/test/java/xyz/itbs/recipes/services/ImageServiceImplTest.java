@@ -62,7 +62,7 @@ class ImageServiceImplTest {
         Exception exception = assertThrows(NotFoundException.class,
                 () -> imageService.saveImageFile(anyLong(),multiPartFile));
 
-        assertEquals("Recipe Not Found", exception.getMessage());
+        assertEquals("Recipe not found for ID: 0", exception.getMessage());
 
     }
 }

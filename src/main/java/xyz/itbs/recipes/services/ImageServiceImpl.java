@@ -22,9 +22,9 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void saveImageFile(Long recipeId, MultipartFile file) {
         Optional<Recipe> recipeOptional= recipeRepository.findById(recipeId);
-        if(!recipeOptional.isPresent()){
+        if(recipeOptional.isEmpty()){
             log.error("Recipe not found !");
-            throw new NotFoundException("Recipe Not Found");
+            throw new NotFoundException("Recipe not found for ID: " + recipeId);
         } else {
             try {
                 Recipe recipe = recipeOptional.get();

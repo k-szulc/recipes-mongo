@@ -21,6 +21,8 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <h1>404 Not Found</h1>
+      <!--/*@thymesVar id="exception" type="xyz.itbs.recipes.exceptions.NotFoundException"*/-->
+      <p th:text="${exception.getMessage()}">Exception Message</p>
     </div>
   </div>
 </div>

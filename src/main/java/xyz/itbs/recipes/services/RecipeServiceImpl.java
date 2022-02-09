@@ -53,8 +53,8 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
     @Override
     public Recipe getRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-        if(!optionalRecipe.isPresent()){
-            throw new NotFoundException("Recipe Not Found");
+        if(optionalRecipe.isEmpty()){
+            throw new NotFoundException("Recipe not found for ID: " + id);
         }
         Recipe recipe = optionalRecipe.get();
         log.info("Fetching Recipe :: ID :: " + recipe.getId());

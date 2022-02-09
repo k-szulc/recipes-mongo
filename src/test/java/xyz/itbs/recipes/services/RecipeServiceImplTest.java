@@ -79,7 +79,7 @@ class RecipeServiceImplTest {
         Exception exception = assertThrows(NotFoundException.class,
                 () -> recipeService.getRecipeById(1L));
 
-        assertEquals("Recipe Not Found", exception.getMessage());
+        assertEquals("Recipe not found for ID: 1", exception.getMessage());
 
     }
 
