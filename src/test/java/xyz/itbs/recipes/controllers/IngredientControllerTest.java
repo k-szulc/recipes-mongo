@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import xyz.itbs.recipes.commands.IngredientCommand;
 import xyz.itbs.recipes.commands.RecipeCommand;
+import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.services.IngredientService;
 import xyz.itbs.recipes.services.RecipeService;
 import xyz.itbs.recipes.services.UnitOfMeasureService;
@@ -127,5 +128,39 @@ class IngredientControllerTest {
                 .andExpect(redirectedUrl("/recipe/1/ingredients"))
                 .andExpect(view().name("redirect:/recipe/1/ingredients"));
         verify(ingredientService,times(1)).deleteIngredientById(anyString(),anyString());
+    }
+
+    @Test
+    public void getIngredientByIdAndRecipeIdRecipeNotFound() throws Exception {
+
+        when(ingredientService.findByIdAndRecipeId(anyString(),anyString())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/recipe/123/ingredients/1/view"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+
+    }
+
+    @Test
+    public void getIngredientByIdAndRecipeIdIngredientNotFound() throws Exception {
+
+        when(ingredientService.findByIdAndRecipeId(anyString(),anyString())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/recipe/1/ingredients/123/view"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+
+    }
+
+
+    @Test
+    public void getIngredientByIdAndRecipeIdNumberFormatException() throws Exception {
+
+        when(ingredientService.findByIdAndRecipeId(anyString(),anyString())).thenThrow(NumberFormatException.class);
+        mockMvc.perform(get("/recipe/1/ingredients/asd/view"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
+        mockMvc.perform(get("/recipe/asd/ingredients/1/view"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
+
     }
 }

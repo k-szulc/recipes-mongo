@@ -59,12 +59,21 @@ class RecipeControllerTest {
     }
 
     @Test
-    public void getRecipeByIdNotFound() throws Exception {
+    public void getRecipeByIdNotFoundException() throws Exception {
 
         when(recipeService.getRecipeById(anyLong())).thenThrow(NotFoundException.class);
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("404error"));
+
+    }
+
+    @Test
+    public void getRecipeByIdNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/recipe/asd/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
 
     }
 
@@ -114,6 +123,13 @@ class RecipeControllerTest {
                 .andExpect(redirectedUrl("/"))
                 .andExpect(view().name("redirect:/"));
         verify(recipeService,times(1)).deleteRecipeById(id);
+    }
+
+    @Test
+    void deleteRecipeByIdNumberFormatException() throws Exception {
+        mockMvc.perform(get("/recipe/asd/delete"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
 }

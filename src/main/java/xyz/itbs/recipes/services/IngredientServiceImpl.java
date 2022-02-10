@@ -39,17 +39,19 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientCommand findByIdAndRecipeId(String id, String recipeId) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(Long.valueOf(recipeId));
-        if(!optionalRecipe.isPresent()){
+        if(optionalRecipe.isEmpty()){
             log.error("Recipe :: " + recipeId + " :: not found !");
-            return null;
+            throw new NotFoundException("Recipe not found for ID: " + recipeId);
+//            return null;
         }
         Recipe recipe = optionalRecipe.get();
         Optional<Ingredient> optionalIngredient = recipe.getIngredients().stream()
                 .filter(ingr -> ingr.getId().equals(Long.valueOf(id)))
                 .findFirst();
-        if(!optionalIngredient.isPresent()){
+        if(optionalIngredient.isEmpty()){
             log.error("Ingredient :: " + id + " :: not found in recipe :: " + recipeId);
-            return null;
+            throw new NotFoundException("Ingredient not found for ID: " + id);
+//            return null;
         }
 
         return ingredientToIngredientCommand.convert(optionalIngredient.get());
@@ -60,7 +62,7 @@ public class IngredientServiceImpl implements IngredientService {
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
-        if(!recipeOptional.isPresent()){
+        if(recipeOptional.isEmpty()){
             log.error("Recipe :: " + command.getRecipeId() + " :: not found !");
             return new IngredientCommand();
         } else {
@@ -78,7 +80,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
                         .findById(command.getUom().getId())
-                        .orElseThrow(()->new NotFoundException("UOM NOT FOUND")));
+                        .orElseThrow(()->new NotFoundException("UOM not found")));
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
                 ingredient.setRecipe(recipe);
@@ -90,7 +92,7 @@ public class IngredientServiceImpl implements IngredientService {
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
                     .findFirst();
 
-            if(!savedIngredient.isPresent()){
+            if(savedIngredient.isEmpty()){
                 savedIngredient = savedRecipe.getIngredients().stream()
                         .filter
                             (recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
@@ -109,16 +111,19 @@ public class IngredientServiceImpl implements IngredientService {
     public void deleteIngredientById(String id, String recipeId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(recipeId));
 
-        if (!recipeOptional.isPresent()) {
+        if (recipeOptional.isEmpty()) {
             log.error("Recipe :: " + recipeId + " :: not found !");
+            throw new NotFoundException("Recipe not found for ID: " + recipeId);
+
         } else {
 
             Recipe recipe = recipeOptional.get();
             Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
                     .filter(ingr -> ingr.getId().equals(Long.valueOf(id)))
                     .findFirst();
-            if(!ingredientOptional.isPresent()) {
+            if(ingredientOptional.isEmpty()) {
                 log.error("Ingredient :: " + id + " :: not found !");
+                throw new NotFoundException("Ingredient not found for ID: " + id);
             } else {
                 log.info("Removing ingredient :: " + id);
                 recipe.delIngredient(ingredientOptional.get());
