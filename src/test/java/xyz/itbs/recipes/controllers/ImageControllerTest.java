@@ -9,8 +9,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import xyz.itbs.recipes.commands.RecipeCommand;
+import xyz.itbs.recipes.exceptions.NotFoundException;
+import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.services.ImageService;
 import xyz.itbs.recipes.services.RecipeService;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -28,12 +32,16 @@ class ImageControllerTest {
     ImageService imageService;
     @Mock
     RecipeService recipeService;
+    @Mock
+    RecipeRepository recipeRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         imageController = new ImageController(imageService,recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(imageController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(imageController)
+                .setControllerAdvice(new ExceptionHandlerController())
+                .build();
     }
 
     @Test
@@ -86,5 +94,27 @@ class ImageControllerTest {
 
         byte[] responseBytes = response.getContentAsByteArray();
         assertEquals(s.getBytes().length, responseBytes.length);
+    }
+
+    @Test
+    public void testGetImageNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/recipe/asdf/recipeimage"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
+    }
+
+    @Test
+    public void getRecipeCommandByIdNotFoundException() throws Exception {
+        MockMultipartFile multipartFile =
+                new MockMultipartFile("imagefile","testing.txt","text/plain",
+                        "SzuRecipes".getBytes());
+
+        doThrow(NotFoundException.class).when(imageService).saveImageFile(anyLong(),any());
+
+        mockMvc.perform(multipart("/recipe/1/image").file(multipartFile))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+
     }
 }
