@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.services.RecipeService;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -41,7 +44,12 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe")
-    public String saveOrUpdateRecipe(RecipeCommand command){
+    public String saveOrUpdateRecipe(@Valid @ModelAttribute("recipe") RecipeCommand command,
+                                     BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(error -> log.error(error.toString()));
+            return "recipe/recipeform";
+        }
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(command);
         return "redirect:/recipe/" + savedRecipeCommand.getId() + "/show";
     }

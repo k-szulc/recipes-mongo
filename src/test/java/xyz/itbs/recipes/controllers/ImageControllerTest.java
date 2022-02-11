@@ -14,7 +14,6 @@ import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.services.ImageService;
 import xyz.itbs.recipes.services.RecipeService;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
