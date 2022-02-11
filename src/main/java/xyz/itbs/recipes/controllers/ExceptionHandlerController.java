@@ -2,9 +2,11 @@ package xyz.itbs.recipes.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import xyz.itbs.recipes.exceptions.NotFoundException;
 
@@ -31,6 +33,17 @@ public class ExceptionHandlerController {
         modelAndView.setViewName("404error");
         modelAndView.addObject("exception", exception);
 
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ModelAndView handleNotAllowed(Exception exception){
+        log.error("Handling not found exception");
+        log.error(exception.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("405error");
+        modelAndView.addObject("exception", exception);
         return modelAndView;
     }
 }

@@ -117,6 +117,13 @@ class RecipeControllerTest {
         verifyNoInteractions(recipeService);
     }
 
+    @Test
+    void getNewRecipeFormNotAllowedError() throws Exception {
+        mockMvc.perform(get("/recipe"))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(view().name("405error"));
+    }
+
 
     @Test
     void getUpdateForm() throws Exception{

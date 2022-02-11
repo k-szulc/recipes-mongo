@@ -7,10 +7,7 @@ import xyz.itbs.recipes.domain.Difficulty;
 import xyz.itbs.recipes.domain.Ingredient;
 import xyz.itbs.recipes.domain.Notes;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +25,6 @@ public class RecipeCommand {
     @NotBlank
     @Size(min = 3, max = 255)
     private String description;
-
     @Min(1)
     @Max(999)
     private Integer prepTime;
