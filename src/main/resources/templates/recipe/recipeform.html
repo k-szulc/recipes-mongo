@@ -45,22 +45,30 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3 form-group">
-                  <label>Categories:</label>
+                <div class="col-md-3" th:if="${!recipe.categories.isEmpty()}">
+                  <h5>Current categories:</h5>
                 </div>
-                <div class="col-md-9 form-group">
-                  <div class="radio">
-                    <label>
-                      <input type="checkbox" value=""/>
-                      Cat 1
-                    </label>
-                  </div>
-                  <div class="radio" th:remove="all">
-                    <label>
-                      <input type="checkbox" value=""/>
-                      Cat 2
-                    </label>
-                  </div>
+                <div class="col-md-3" th:if="${!recipe.categories.isEmpty()}">
+                  <ul th:each="cat : ${recipe.categories}">
+                    <li th:text="${cat.getDescription()}">cat one</li>
+                  </ul>
+                </div>
+                <div class="col-md-3">
+                  <h5>Set categories:</h5>
+                </div>
+                <div class="col-md-3">
+                  <ul>
+                    <li th:each="cat : ${allCategories}">
+                      <input type="checkbox" th:field="*{categories}" th:value="${cat.id}" th:errorclass="has-errors"/>
+<!--                      <input type="checkbox" th:text="${cat.description}" th:value="${cat.id}" th:checked="${1==1}" th:errorclass="has-errors"/>-->
+                      <span class="help-block" th:if="${#fields.hasErrors('categories')}">
+                        <ul>
+                          <li th:each="err : ${#fields.errors('categories')}" th:text="${err}"/>
+                        </ul>
+                      </span>
+                      <label th:text="${cat.getDescription()}">cat one</label>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <div class="row">

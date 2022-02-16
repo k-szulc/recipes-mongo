@@ -12,6 +12,7 @@ import xyz.itbs.recipes.commands.RecipeCommand;
 import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
+import xyz.itbs.recipes.services.CategoryService;
 import xyz.itbs.recipes.services.RecipeService;
 
 import java.util.Optional;
@@ -33,14 +34,13 @@ class RecipeControllerTest {
 
     @Mock
     RecipeService recipeService;
-
     @Mock
-    RecipeRepository recipeRepository;
+    CategoryService categoryService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recipeController = new RecipeController(recipeService);
+        recipeController = new RecipeController(recipeService,categoryService);
         mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
                 .setControllerAdvice(new ExceptionHandlerController())
                 .build();
