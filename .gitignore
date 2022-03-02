@@ -11,6 +11,12 @@ pom.xml.next
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
 
 ### STS ###
 .apt_generated
@@ -20,12 +26,19 @@ buildNumber.properties
 .settings
 .springBeans
 .sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/

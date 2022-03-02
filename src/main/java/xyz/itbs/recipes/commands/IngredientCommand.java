@@ -1,7 +1,6 @@
 package xyz.itbs.recipes.commands;
 
 import lombok.*;
-import xyz.itbs.recipes.domain.UnitOfMeasure;
 
 import java.math.BigDecimal;
 
@@ -11,8 +10,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class IngredientCommand {
-    private Long id;
-    private Long recipeId;
+    private String id;
+    private String recipeId;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasureCommand uom;

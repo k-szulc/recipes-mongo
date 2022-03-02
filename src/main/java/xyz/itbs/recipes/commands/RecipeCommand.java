@@ -2,10 +2,7 @@ package xyz.itbs.recipes.commands;
 
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
-import xyz.itbs.recipes.domain.Category;
 import xyz.itbs.recipes.domain.Difficulty;
-import xyz.itbs.recipes.domain.Ingredient;
-import xyz.itbs.recipes.domain.Notes;
 
 import javax.validation.constraints.*;
 import java.util.HashSet;
@@ -20,7 +17,7 @@ import java.util.Set;
 @ToString
 public class RecipeCommand {
 
-    private Long id;
+    private String id;
 
     @NotBlank
     @Size(min = 3, max = 255)
