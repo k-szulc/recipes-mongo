@@ -16,7 +16,7 @@ class CategoryCommandToCategoryTest {
     @BeforeEach
     void setUp(){
         categoryCommandToCategory = new CategoryCommandToCategory();
-        categoryCommand = CategoryCommand.builder().id(1L).description("test").build();
+        categoryCommand = CategoryCommand.builder().id("1").description("test").build();
     }
 
     @Test

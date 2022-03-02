@@ -17,7 +17,7 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
     void setUp() {
         unitOfMeasureCommandToUnitOfMeasure = new UnitOfMeasureCommandToUnitOfMeasure();
         unitOfMeasureCommand = UnitOfMeasureCommand.builder()
-                .id(1L)
+                .id("1")
                 .description("test")
                 .build();
     }

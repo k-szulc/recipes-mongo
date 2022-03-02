@@ -48,7 +48,7 @@ class IngredientControllerTest {
     @Test
     void getIngredientList() throws Exception {
         when(recipeService.getRecipeCommandById(anyLong()))
-                .thenReturn(RecipeCommand.builder().id(1L).build());
+                .thenReturn(RecipeCommand.builder().id("1").build());
         mockMvc.perform(get("/recipe/1/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
@@ -60,9 +60,9 @@ class IngredientControllerTest {
     @Test
     void getIngredientListNullRecipeId() throws Exception {
         when(recipeService.saveRecipeCommand(any(RecipeCommand.class)))
-                .thenReturn(RecipeCommand.builder().id(1L).build());
+                .thenReturn(RecipeCommand.builder().id("1").build());
         when(recipeService.getRecipeCommandById(anyLong()))
-                .thenReturn(RecipeCommand.builder().id(1L).build());
+                .thenReturn(RecipeCommand.builder().id("1").build());
         mockMvc.perform(get("/recipe/null/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
@@ -75,7 +75,7 @@ class IngredientControllerTest {
     @Test
     void getIngredientByIdAndRecipeId() throws Exception {
         when(ingredientService.findByIdAndRecipeId(anyString(),anyString()))
-                .thenReturn(IngredientCommand.builder().id(1L).recipeId(1L).build());
+                .thenReturn(IngredientCommand.builder().id("1").recipeId("1").build());
         mockMvc.perform(get("/recipe/1/ingredients/1/view"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/view"))
@@ -87,7 +87,7 @@ class IngredientControllerTest {
     @Test
     void newIngredientForm() throws Exception {
         when(recipeService.getRecipeCommandById(anyLong()))
-                .thenReturn(RecipeCommand.builder().id(2L).build());
+                .thenReturn(RecipeCommand.builder().id("2").build());
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
         mockMvc.perform(get("/recipe/2/ingredients/new"))
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class IngredientControllerTest {
     @Test
     void updateRecipeIngredient() throws Exception {
         when(ingredientService.findByIdAndRecipeId(anyString(),anyString()))
-                .thenReturn(IngredientCommand.builder().id(2L).recipeId(1L).build());
+                .thenReturn(IngredientCommand.builder().id("2").recipeId("1").build());
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
         mockMvc.perform(get("/recipe/1/ingredients/2/edit"))
                 .andExpect(status().isOk())
@@ -113,7 +113,7 @@ class IngredientControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         when(ingredientService.saveIngredientCommand(any()))
-                .thenReturn(IngredientCommand.builder().id(5L).recipeId(7L).build());
+                .thenReturn(IngredientCommand.builder().id("5").recipeId("7").build());
 
         mockMvc.perform(post("/recipe/7/ingredients")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)

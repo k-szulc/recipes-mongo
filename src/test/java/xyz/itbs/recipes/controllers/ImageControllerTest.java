@@ -45,7 +45,7 @@ class ImageControllerTest {
 
     @Test
     void showUploadForm() throws Exception{
-        RecipeCommand recipe = RecipeCommand.builder().id(1L).build();
+        RecipeCommand recipe = RecipeCommand.builder().id("1").build();
         when(recipeService.getRecipeCommandById(anyLong())).thenReturn(recipe);
 
         mockMvc.perform(get("/recipe/1/image"))
@@ -71,7 +71,7 @@ class ImageControllerTest {
     @Test
     void renderImageFromDB() throws Exception{
         //given
-        RecipeCommand command = RecipeCommand.builder().id(1L).build();
+        RecipeCommand command = RecipeCommand.builder().id("1").build();
 
         String s = "fake image text";
         Byte[] bytesBoxed = new Byte[s.getBytes().length];

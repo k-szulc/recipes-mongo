@@ -14,7 +14,6 @@ import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -48,9 +47,9 @@ class IngredientServiceImplTest {
 
     @Test
     void findByIdAndRecipeId() {
-        Ingredient ingr = Ingredient.builder().id(1L).build();
-        Ingredient ingr2 = Ingredient.builder().id(2L).build();
-        Recipe recipe = Recipe.builder().id(1L).ingredients(new HashSet<>()).build();
+        Ingredient ingr = Ingredient.builder().id("1").build();
+        Ingredient ingr2 = Ingredient.builder().id("2").build();
+        Recipe recipe = Recipe.builder().id("1").ingredients(new HashSet<>()).build();
         recipe.addIngredient(ingr);
         recipe.addIngredient(ingr2);
 
@@ -58,8 +57,8 @@ class IngredientServiceImplTest {
         IngredientCommand ingredientCommand = ingredientService.findByIdAndRecipeId("1","1");
 
         assertNotNull(ingredientCommand);
-        assertEquals(1L,ingredientCommand.getId());
-        assertEquals(1L,ingredientCommand.getRecipeId());
+        assertEquals("1",ingredientCommand.getId());
+        assertEquals("1",ingredientCommand.getRecipeId());
         verify(recipeRepository,times(1)).findById(anyLong());
 
     }
@@ -68,20 +67,20 @@ class IngredientServiceImplTest {
     void saveIngredientCommand(){
 
         IngredientCommand command = new IngredientCommand();
-        command.setId(3L);
-        command.setRecipeId(2L);
+        command.setId("3");
+        command.setRecipeId("2");
 
-        Optional<Recipe> recipeOptional = Optional.of(Recipe.builder().id(1L).ingredients(new HashSet<>()).build());
+        Optional<Recipe> recipeOptional = Optional.of(Recipe.builder().id("1").ingredients(new HashSet<>()).build());
 
         Recipe savedRecipe = new Recipe();
-        savedRecipe.addIngredient(Ingredient.builder().id(3L).build());
+        savedRecipe.addIngredient(Ingredient.builder().id("3").build());
 
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
         IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
 
-        assertEquals(Long.valueOf(3L), savedCommand.getId());
+        assertEquals("3", savedCommand.getId());
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository,times(1)).save(any(Recipe.class));
 
@@ -89,17 +88,17 @@ class IngredientServiceImplTest {
 
     @Test
     void deleteIngredientById(){
-        Recipe recipe = Recipe.builder().id(1L).ingredients(new HashSet<>()).build();
-        Ingredient ingredient = Ingredient.builder().id(1L).build();
-        Ingredient ingredient2 = Ingredient.builder().id(2L).build();
-        Ingredient ingredient3 = Ingredient.builder().id(3L).build();
+        Recipe recipe = Recipe.builder().id("1").ingredients(new HashSet<>()).build();
+        Ingredient ingredient = Ingredient.builder().id("1").build();
+        Ingredient ingredient2 = Ingredient.builder().id("2").build();
+        Ingredient ingredient3 = Ingredient.builder().id("3").build();
         recipe.addIngredient(ingredient);
         recipe.addIngredient(ingredient2);
         recipe.addIngredient(ingredient3);
 
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
         when(recipeRepository.save(any())).thenReturn(recipe);
-        ingredientService.deleteIngredientById(recipe.getId().toString(),ingredient2.getId().toString());
+        ingredientService.deleteIngredientById(recipe.getId(),ingredient2.getId());
         assertEquals(2,recipe.getIngredients().size());
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,times(1)).save(any());

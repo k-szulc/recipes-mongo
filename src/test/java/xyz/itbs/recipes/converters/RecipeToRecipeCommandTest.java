@@ -35,20 +35,20 @@ class RecipeToRecipeCommandTest {
         MockitoAnnotations.openMocks(this);
         Set<Category> categorySet = new HashSet<>();
         Set<Ingredient> ingredientSet = new HashSet<>();
-        categorySet.add(Category.builder().id(1L).build());
-        categorySet.add(Category.builder().id(2L).build());
-        ingredientSet.add(Ingredient.builder().id(1L).build());
-        ingredientSet.add(Ingredient.builder().id(2L).build());
+        categorySet.add(Category.builder().id("1").build());
+        categorySet.add(Category.builder().id("2").build());
+        ingredientSet.add(Ingredient.builder().id("1").build());
+        ingredientSet.add(Ingredient.builder().id("2").build());
         recipeToRecipeCommand = new RecipeToRecipeCommand(categoryToCategoryCommand,
                 ingredientToIngredientCommand, notesToNotesCommand);
         recipe = Recipe.builder()
-                .id(1L)
+                .id("1")
                 .description("test")
                 .cookTime(1)
                 .difficulty(Difficulty.EASY)
                 .categories(categorySet)
                 .ingredients(ingredientSet)
-                .notes(Notes.builder().id(1L).build())
+                .notes(Notes.builder().id("1").build())
                 .directions("test")
                 .prepTime(1)
                 .servings(1)
@@ -71,13 +71,13 @@ class RecipeToRecipeCommandTest {
     @Test
     void convert() {
         when(categoryToCategoryCommand.convert(any(Category.class)))
-                .thenReturn(CategoryCommand.builder().id(1L).build())
-                .thenReturn(CategoryCommand.builder().id(2L).build());
+                .thenReturn(CategoryCommand.builder().id("1").build())
+                .thenReturn(CategoryCommand.builder().id("2").build());
         when(ingredientToIngredientCommand.convert(any(Ingredient.class)))
-                .thenReturn(IngredientCommand.builder().id(1L).build())
-                .thenReturn(IngredientCommand.builder().id(2L).build());
+                .thenReturn(IngredientCommand.builder().id("1").build())
+                .thenReturn(IngredientCommand.builder().id("2").build());
         when(notesToNotesCommand.convert(any(Notes.class)))
-                .thenReturn(NotesCommand.builder().id(1L).build());
+                .thenReturn(NotesCommand.builder().id("1").build());
         recipeCommand = recipeToRecipeCommand.convert(recipe);
         assertNotNull(recipeCommand);
         assertEquals(recipe.getId(),recipe.getId());

@@ -34,8 +34,8 @@ class UnitOfMeasureServiceImplTest {
     @Test
     void listAllUoms() {
         Set<UnitOfMeasure> unitOfMeasureSet = new HashSet<>();
-        UnitOfMeasure uom1 = UnitOfMeasure.builder().id(1L).build();
-        UnitOfMeasure uom2 = UnitOfMeasure.builder().id(2L).build();
+        UnitOfMeasure uom1 = UnitOfMeasure.builder().id("1").build();
+        UnitOfMeasure uom2 = UnitOfMeasure.builder().id("2").build();
         unitOfMeasureSet.add(uom1);
         unitOfMeasureSet.add(uom2);
 

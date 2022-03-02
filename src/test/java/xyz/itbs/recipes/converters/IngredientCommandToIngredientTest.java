@@ -29,9 +29,9 @@ class IngredientCommandToIngredientTest {
         MockitoAnnotations.openMocks(this);
         ingredientCommandToIngredient = new IngredientCommandToIngredient(unitOfMeasureCommandToUnitOfMeasure);
         ingredientCommand = IngredientCommand.builder()
-                                .id(1L)
+                                .id("1")
                                 .description("test")
-                                .uom(UnitOfMeasureCommand.builder().id(1L).build())
+                                .uom(UnitOfMeasureCommand.builder().id("1").build())
                                 .amount(BigDecimal.valueOf(1))
                                 .build();
 }
@@ -49,7 +49,7 @@ class IngredientCommandToIngredientTest {
     @Test
     void convert(){
         when(unitOfMeasureCommandToUnitOfMeasure.convert(any(UnitOfMeasureCommand.class)))
-                .thenReturn(UnitOfMeasure.builder().id(1L).build());
+                .thenReturn(UnitOfMeasure.builder().id("1").build());
         ingredient = ingredientCommandToIngredient.convert(ingredientCommand);
         assertNotNull(ingredient);
         assertEquals(ingredientCommand.getId(),ingredient.getId());

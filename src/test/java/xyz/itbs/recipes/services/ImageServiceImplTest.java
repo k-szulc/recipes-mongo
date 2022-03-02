@@ -39,7 +39,7 @@ class ImageServiceImplTest {
     void saveImageFie() throws Exception{
         //given
 
-        Recipe recipe = Recipe.builder().id(1L).build();
+        Recipe recipe = Recipe.builder().id("1").build();
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);

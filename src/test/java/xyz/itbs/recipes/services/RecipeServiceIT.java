@@ -13,7 +13,6 @@ import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
-import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,8 +33,8 @@ class RecipeServiceIT {
     @Autowired
     UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
 
-    @Transactional
-    @Test
+
+//    @Test
     public void setNewDescription_bySaveRecipeCommand(){
         //given
         Iterable<Recipe> recipes = recipeRepository.findAll();

@@ -17,7 +17,7 @@ class NotesCommandToNotesTest {
     void setUp() {
         notesCommandToNotes = new NotesCommandToNotes();
         notesCommand = NotesCommand.builder()
-                .id(1L)
+                .id("1")
                 .notesBody("test")
                 .build();
     }

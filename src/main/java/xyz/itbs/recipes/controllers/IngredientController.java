@@ -31,7 +31,7 @@ public class IngredientController {
     public String getIngredientList(@PathVariable String recipeId, Model model ){
         if(recipeId == null || recipeId.equals("null")) {
             RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(RecipeCommand.builder()
-                    .id(Long.valueOf(recipeService.getAllRecipes().size()+1))
+                    .id(String.valueOf(recipeService.getAllRecipes().size()+1))
                     .build());
             recipeId = String.valueOf(savedRecipeCommand.getId());
         }
@@ -60,7 +60,7 @@ public class IngredientController {
         RecipeCommand recipeCommand = recipeService.getRecipeCommandById(Long.valueOf(recipeId));
 
         IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setRecipeId(recipeId);
         model.addAttribute("ingredient", ingredientCommand);
         ingredientCommand.setUom(new UnitOfMeasureCommand());
         model.addAttribute("uomList",unitOfMeasureService.listAllUoms());

@@ -11,7 +11,6 @@ import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 import xyz.itbs.recipes.repositories.UnitOfMeasureRepository;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class IngredientServiceImpl implements IngredientService {
         }
         Recipe recipe = optionalRecipe.get();
         Optional<Ingredient> optionalIngredient = recipe.getIngredients().stream()
-                .filter(ingr -> ingr.getId().equals(Long.valueOf(id)))
+                .filter(ingr -> ingr.getId().equals(id))
                 .findFirst();
         if(optionalIngredient.isEmpty()){
             log.error("Ingredient :: " + id + " :: not found in recipe :: " + recipeId);
@@ -58,9 +57,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @Transactional
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
-        Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
+        Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(command.getRecipeId()));
 
         if(recipeOptional.isEmpty()){
             log.error("Recipe :: " + command.getRecipeId() + " :: not found !");
@@ -79,7 +77,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setDescription(command.getDescription());
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
-                        .findById(command.getUom().getId())
+                        .findById(Long.valueOf(command.getUom().getId()))
                         .orElseThrow(()->new NotFoundException("UOM not found")));
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
@@ -107,7 +105,6 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    @Transactional
     public void deleteIngredientById(String id, String recipeId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(recipeId));
 
@@ -119,7 +116,7 @@ public class IngredientServiceImpl implements IngredientService {
 
             Recipe recipe = recipeOptional.get();
             Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
-                    .filter(ingr -> ingr.getId().equals(Long.valueOf(id)))
+                    .filter(ingr -> ingr.getId().equals(id))
                     .findFirst();
             if(ingredientOptional.isEmpty()) {
                 log.error("Ingredient :: " + id + " :: not found !");

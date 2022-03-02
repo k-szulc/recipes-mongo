@@ -10,7 +10,6 @@ import xyz.itbs.recipes.domain.Recipe;
 import xyz.itbs.recipes.exceptions.NotFoundException;
 import xyz.itbs.recipes.repositories.RecipeRepository;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -63,13 +62,11 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
 
     }
 
-    @Transactional
     @Override
     public RecipeCommand getRecipeCommandById(Long id){
         return recipeToRecipeCommand.convert(getRecipeById(id));
     }
 
-    @Transactional
     @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
         Recipe savedRecipe = recipeRepository.save(recipeCommandToRecipe.convert(recipeCommand));
@@ -86,13 +83,12 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
     }
 
     @Override
-    @Transactional
     @Scheduled(fixedDelay = 300000)
     public void cleanUp() {
         log.debug("CLEANUP :: Before cleanup :: " + getAllRecipes().size());
         getAllRecipes().stream()
                 .filter(recipe -> recipe.getDescription()==null)
-                .forEach(recipe -> deleteRecipeById(recipe.getId()));
+                .forEach(recipe -> deleteRecipeById(Long.valueOf(recipe.getId())));
         log.debug("CLEANUP :: After cleanup :: " + getAllRecipes().size());
     }
 }

@@ -50,8 +50,8 @@ class RecipeServiceImplTest {
     @Test
     void getNonEmptyRecipes(){
         HashSet<Recipe> recipeHashSet = new HashSet<>();
-        recipeHashSet.add(Recipe.builder().id(1L).build());
-        recipeHashSet.add(Recipe.builder().id(2L).description("test").build());
+        recipeHashSet.add(Recipe.builder().id("1").build());
+        recipeHashSet.add(Recipe.builder().id("2").description("test").build());
         when(recipeRepository.findAll()).thenReturn(recipeHashSet);
 
         Set<Recipe> recipeSet = recipeService.getNotNullDescriptionRecipes();
@@ -62,7 +62,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeById() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
 
         Recipe savedRecipe = recipeService.getRecipeById(1L);
@@ -100,9 +100,9 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeCommandById() {
         RecipeCommand recipe = new RecipeCommand();
-        recipe.setId(1L);
+        recipe.setId("1");
         when(recipeToRecipeCommand.convert(any(Recipe.class))).thenReturn(recipe);
-        when(recipeRepository.findById(1L)).thenReturn(Optional.of(Recipe.builder().id(1L).build()));
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(Recipe.builder().id("1").build()));
 
         RecipeCommand savedRecipe = recipeService.getRecipeCommandById(1L);
         assertNotNull(savedRecipe);

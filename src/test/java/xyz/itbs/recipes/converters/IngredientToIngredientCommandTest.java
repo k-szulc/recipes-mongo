@@ -30,11 +30,11 @@ class IngredientToIngredientCommandTest {
         MockitoAnnotations.openMocks(this);
         ingredientToIngredientCommand = new IngredientToIngredientCommand(unitOfMeasureToUnitOfMeasureCommand);
         ingredient = Ingredient.builder()
-                .id(1L)
+                .id("1")
                 .description("test")
                 .amount(new BigDecimal(1))
-                .uom(UnitOfMeasure.builder().id(1L).build())
-                .recipe(Recipe.builder().id(2L).build())
+                .uom(UnitOfMeasure.builder().id("1").build())
+                .recipe(Recipe.builder().id("2").build())
                 .build();
     }
 
@@ -52,7 +52,7 @@ class IngredientToIngredientCommandTest {
     @Test
     void convert(){
         when(unitOfMeasureToUnitOfMeasureCommand.convert(any(UnitOfMeasure.class)))
-                .thenReturn(UnitOfMeasureCommand.builder().id(1L).build());
+                .thenReturn(UnitOfMeasureCommand.builder().id("1").build());
         ingredientCommand = ingredientToIngredientCommand.convert(ingredient);
         assertNotNull(ingredientCommand);
         assertEquals(ingredient.getId(),ingredientCommand.getId());

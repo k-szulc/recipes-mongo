@@ -30,7 +30,7 @@ class RecipeControllerTest {
 
     RecipeController recipeController;
     MockMvc mockMvc;
-    Long id = 1L;
+    String id = "1";
 
     @Mock
     RecipeService recipeService;
@@ -144,7 +144,7 @@ class RecipeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(view().name("redirect:/"));
-        verify(recipeService,times(1)).deleteRecipeById(id);
+        verify(recipeService,times(1)).deleteRecipeById(Long.valueOf(id));
     }
 
     @Test
