@@ -50,7 +50,7 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
     }
 
     @Override
-    public Recipe getRecipeById(Long id) {
+    public Recipe getRecipeById(String id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if(optionalRecipe.isEmpty()){
             throw new NotFoundException("Recipe not found for ID: " + id);
@@ -63,7 +63,7 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
     }
 
     @Override
-    public RecipeCommand getRecipeCommandById(Long id){
+    public RecipeCommand getRecipeCommandById(String id){
         return recipeToRecipeCommand.convert(getRecipeById(id));
     }
 
@@ -77,7 +77,7 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
 
 
     @Override
-    public void deleteRecipeById(Long id){
+    public void deleteRecipeById(String id){
         recipeRepository.deleteById(id);
         log.info("Removed Recipe :: ID :: " + id);
     }
@@ -88,7 +88,7 @@ public class RecipeServiceImpl implements RecipeService, CleanerService{
         log.debug("CLEANUP :: Before cleanup :: " + getAllRecipes().size());
         getAllRecipes().stream()
                 .filter(recipe -> recipe.getDescription()==null)
-                .forEach(recipe -> deleteRecipeById(Long.valueOf(recipe.getId())));
+                .forEach(recipe -> deleteRecipeById(recipe.getId()));
         log.debug("CLEANUP :: After cleanup :: " + getAllRecipes().size());
     }
 }

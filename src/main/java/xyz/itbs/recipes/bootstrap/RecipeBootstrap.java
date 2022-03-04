@@ -271,6 +271,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         UnitOfMeasure uom8 = new UnitOfMeasure();
         uom8.setDescription("Dash");
         unitOfMeasureRepository.save(uom8);
+
+        UnitOfMeasure uom9 = UnitOfMeasure.builder().description("Clove").build();
+        unitOfMeasureRepository.save(uom9);
     }
 }
 

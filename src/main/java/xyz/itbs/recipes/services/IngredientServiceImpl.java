@@ -37,7 +37,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientCommand findByIdAndRecipeId(String id, String recipeId) {
-        Optional<Recipe> optionalRecipe = recipeRepository.findById(Long.valueOf(recipeId));
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()){
             log.error("Recipe :: " + recipeId + " :: not found !");
             throw new NotFoundException("Recipe not found for ID: " + recipeId);
@@ -58,7 +58,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
-        Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(command.getRecipeId()));
+        Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
         if(recipeOptional.isEmpty()){
             log.error("Recipe :: " + command.getRecipeId() + " :: not found !");
@@ -77,7 +77,7 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setDescription(command.getDescription());
                 ingredientFound.setAmount(command.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository
-                        .findById(Long.valueOf(command.getUom().getId()))
+                        .findById(command.getUom().getId())
                         .orElseThrow(()->new NotFoundException("UOM not found")));
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
@@ -106,7 +106,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public void deleteIngredientById(String id, String recipeId) {
-        Optional<Recipe> recipeOptional = recipeRepository.findById(Long.valueOf(recipeId));
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
         if (recipeOptional.isEmpty()) {
             log.error("Recipe :: " + recipeId + " :: not found !");

@@ -17,7 +17,6 @@ import xyz.itbs.recipes.services.UnitOfMeasureService;
 import java.util.HashSet;
 
 import static org.hamcrest.Matchers.instanceOf;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,21 +46,21 @@ class IngredientControllerTest {
 
     @Test
     void getIngredientList() throws Exception {
-        when(recipeService.getRecipeCommandById(anyLong()))
+        when(recipeService.getRecipeCommandById(anyString()))
                 .thenReturn(RecipeCommand.builder().id("1").build());
         mockMvc.perform(get("/recipe/1/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(model().attribute("recipe",instanceOf(RecipeCommand.class)));
-        verify(recipeService,times(1)).getRecipeCommandById(anyLong());
+        verify(recipeService,times(1)).getRecipeCommandById(anyString());
     }
 
     @Test
     void getIngredientListNullRecipeId() throws Exception {
         when(recipeService.saveRecipeCommand(any(RecipeCommand.class)))
                 .thenReturn(RecipeCommand.builder().id("1").build());
-        when(recipeService.getRecipeCommandById(anyLong()))
+        when(recipeService.getRecipeCommandById(anyString()))
                 .thenReturn(RecipeCommand.builder().id("1").build());
         mockMvc.perform(get("/recipe/null/ingredients"))
                 .andExpect(status().isOk())
@@ -69,7 +68,7 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(model().attribute("recipe",instanceOf(RecipeCommand.class)));
         verify(recipeService,times(1)).saveRecipeCommand(any(RecipeCommand.class));
-        verify(recipeService,times(1)).getRecipeCommandById(anyLong());
+        verify(recipeService,times(1)).getRecipeCommandById(anyString());
     }
 
     @Test
@@ -86,7 +85,7 @@ class IngredientControllerTest {
 
     @Test
     void newIngredientForm() throws Exception {
-        when(recipeService.getRecipeCommandById(anyLong()))
+        when(recipeService.getRecipeCommandById(anyString()))
                 .thenReturn(RecipeCommand.builder().id("2").build());
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
         mockMvc.perform(get("/recipe/2/ingredients/new"))
@@ -95,7 +94,7 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("uomList"));
 
-        verify(recipeService, times(1)).getRecipeCommandById(anyLong());
+        verify(recipeService, times(1)).getRecipeCommandById(anyString());
     }
 
     @Test

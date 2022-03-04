@@ -42,12 +42,12 @@ class ImageServiceImplTest {
         Recipe recipe = Recipe.builder().id("1").build();
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
         //when
-        imageService.saveImageFile(1L,multiPartFile);
+        imageService.saveImageFile("1",multiPartFile);
 
         //then
         verify(recipeRepository,times(1)).save(argumentCaptor.capture());
@@ -57,12 +57,12 @@ class ImageServiceImplTest {
 
     @Test
     void getRecipeByIdNotFound() {
-        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(recipeRepository.findById(anyString())).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(NotFoundException.class,
-                () -> imageService.saveImageFile(anyLong(),multiPartFile));
+                () -> imageService.saveImageFile(anyString(),multiPartFile));
 
-        assertEquals("Recipe not found for ID: 0", exception.getMessage());
+        assertEquals("Recipe not found for ID: ", exception.getMessage());
 
     }
 }

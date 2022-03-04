@@ -46,13 +46,13 @@ class ImageControllerTest {
     @Test
     void showUploadForm() throws Exception{
         RecipeCommand recipe = RecipeCommand.builder().id("1").build();
-        when(recipeService.getRecipeCommandById(anyLong())).thenReturn(recipe);
+        when(recipeService.getRecipeCommandById(anyString())).thenReturn(recipe);
 
         mockMvc.perform(get("/recipe/1/image"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService, times(1)).getRecipeCommandById(anyLong());
+        verify(recipeService, times(1)).getRecipeCommandById(anyString());
     }
 
     @Test
@@ -65,7 +65,7 @@ class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"));
 
-        verify(imageService, times(1)).saveImageFile(anyLong(),any());
+        verify(imageService, times(1)).saveImageFile(anyString(),any());
     }
 
     @Test
@@ -84,7 +84,7 @@ class ImageControllerTest {
 
         command.setImage(bytesBoxed);
 
-        when(recipeService.getRecipeCommandById(anyLong())).thenReturn(command);
+        when(recipeService.getRecipeCommandById(anyString())).thenReturn(command);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
@@ -95,7 +95,7 @@ class ImageControllerTest {
         assertEquals(s.getBytes().length, responseBytes.length);
     }
 
-    @Test
+//    @Test
     public void testGetImageNumberFormatException() throws Exception {
 
         mockMvc.perform(get("/recipe/asdf/recipeimage"))
@@ -109,7 +109,7 @@ class ImageControllerTest {
                 new MockMultipartFile("imagefile","testing.txt","text/plain",
                         "SzuRecipes".getBytes());
 
-        doThrow(NotFoundException.class).when(imageService).saveImageFile(anyLong(),any());
+        doThrow(NotFoundException.class).when(imageService).saveImageFile(anyString(),any());
 
         mockMvc.perform(multipart("/recipe/1/image").file(multipartFile))
                 .andExpect(status().isNotFound())

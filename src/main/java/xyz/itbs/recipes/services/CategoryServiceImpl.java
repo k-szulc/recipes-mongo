@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public CategoryCommand getCategoryCommandById(String id){
-        Optional<Category> optionalCategory = categoryRepository.findById(Long.valueOf(id));
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
         if(optionalCategory.isPresent()){
             Category category = optionalCategory.get();
             return categoryToCategoryCommand.convert(category);

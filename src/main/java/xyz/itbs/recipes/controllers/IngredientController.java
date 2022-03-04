@@ -35,7 +35,7 @@ public class IngredientController {
                     .build());
             recipeId = String.valueOf(savedRecipeCommand.getId());
         }
-        model.addAttribute("recipe",recipeService.getRecipeCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe",recipeService.getRecipeCommandById(recipeId));
         return "recipe/ingredient/list";
     }
 
@@ -57,7 +57,7 @@ public class IngredientController {
     @GetMapping("recipe/{recipeId}/ingredients/new")
     public String newRecipe(@PathVariable String recipeId, Model model){
 
-        RecipeCommand recipeCommand = recipeService.getRecipeCommandById(Long.valueOf(recipeId));
+        RecipeCommand recipeCommand = recipeService.getRecipeCommandById(recipeId);
 
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(recipeId);
